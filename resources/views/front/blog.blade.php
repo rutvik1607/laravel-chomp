@@ -6,5 +6,5 @@
         bannerImg="public/images/2022/08/banner-1.png">
     </x-page-banner>
 
-
+    <x-blog name="" title="" description="" category="" image="" ref1=""></x-blog>
 </x-front-layout>
