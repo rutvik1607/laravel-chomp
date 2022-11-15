@@ -60,9 +60,6 @@
                             <x-dropdown-link :href="route('profile')">
                                 {{ __('Profile') }}
                             </x-dropdown-link>
-                            <x-dropdown-link :href="route('blogs')">
-                                {{ __('Blogs') }}
-                            </x-dropdown-link>
                         </form>
                     </x-slot>
                 </x-dropdown>
@@ -91,8 +88,12 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('pages')" :active="request()->routeIs('pages')">
-                {{ __('pages') }}
+                {{ __('Pages') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('blogs')" :active="request()->routeIs('blogs')">
+                {{ __('Blogs') }}
+            </x-responsive-nav-link>
+        
         </div>
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
