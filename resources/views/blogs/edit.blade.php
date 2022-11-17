@@ -13,7 +13,11 @@
                 <div class="bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-2 bg-indigo-50 border-b border-gray-200 card">
                         <div class="card-body">
-                            <form action="{{ Route('blogAdd') }}" method="post" enctype="multipart/form-data">
+                            @php
+                            $blogdata = $blog['blog'];
+                            @endphp
+
+                            <form action="{{ Route('blogEdit',['id'=>$blogdata['id']])}}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <a href="{{ Route('blogs') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">{{ __('back') }}
                                 </a>
@@ -21,7 +25,7 @@
                                 <div class="row mt-4">
                                     <div class="col-md-3">
                                         <x-label for="name" :value="__('Name')" />
-                                        <x-input id="name" class="block mt-1 w-full @error('name') is-invalid @enderror" type="text" name="name" autocomplete="name" />
+                                        <x-input id="name" class="block mt-1 w-full @error('name') is-invalid @enderror" type="text" name="name" autocomplete="name" value="{{ $blogdata['name']}}" />
                                         @error('name')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -31,11 +35,11 @@
                                     <div class="col-md-4">
                                         <x-label for="category" :value="__('Category')" />
                                         <select class="block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 @error('category') is-invalid @enderror" name="category">
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
+                                            <option value="1" {{ $blogdata['category']==1 ? 'selected':'' }}>1</option>
+                                            <option value="2" {{ $blogdata['category']==2 ? 'selected':'' }}>2</option>
+                                            <option value="3" {{ $blogdata['category']==3 ? 'selected':'' }}>3</option>
+                                            <option value="4" {{ $blogdata['category']==4 ? 'selected':'' }}>4</option>
+                                            <option value="5" {{ $blogdata['category']==5 ? 'selected':'' }}>5</option>
                                         </select>
                                         @error('category')
                                         <span class="invalid-feedback" role="alert">
@@ -47,7 +51,7 @@
                                 <div class="row mt-4">
                                     <div class="col-md-3">
                                         <x-label for="title" :value="__('Sub Title')" />
-                                        <x-input id="title" class="block mt-1 w-full @error('title') is-invalid @enderror" type="text" name="title" autocomplete="title" />
+                                        <x-input id="title" class="block mt-1 w-full @error('title') is-invalid @enderror" type="text" name="title" autocomplete="title" value="{{ $blogdata['title']}}" />
                                         @error('title')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -57,7 +61,7 @@
 
                                     <div class="col-md-3">
                                         <x-label for="description" :value="__('Description')" />
-                                        <textarea name="description" class="block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 @error('title') is-invalid @enderror"></textarea>
+                                        <textarea name="description" class="block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 @error('title') is-invalid @enderror">{{ $blogdata['description']}}</textarea>
                                         @error('description')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -67,18 +71,26 @@
 
                                     <div class="col-md-4">
                                         <x-label for="image" :value="__('Image')" />
-                                        <input type="file" required name="image" id="image" class="block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 fileupload">
+                                        <input type="file" name="image" id="image" class="block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 fileupload" {{ $blogdata['image']== '' ? 'required':'' }}>
                                         @error('image')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
+                                        <?php if ($blogdata['image']) { ?>
+                                            <div style="width: 150px;border: 1px solid #ddd;padding: 10px;margin-top: 1em;">
+                                                <img src="{{ url('/public/images/blog/'.$blogdata['image']) }}" style="width:50%">
+                                            </div>
+                                        <?php } ?>
+                                        <?php if ($blogdata['image'] != '') { ?>
+                                            <a onclick="return confirm('Are you sure?')" ; href="{{ Route('removeImage',['id'=>$blogdata['id']])}}" title="Remove Logo">Remove Logo</a>
+                                        <?php } ?>
                                     </div>
                                 </div>
                                 <div class="row mt-4">
                                     <div class="col-md-4">
                                         <x-label for="ref1" :value="__('Refrens 1')" />
-                                        <textarea name="ref1" class="block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 @error('title') is-invalid @enderror"></textarea>
+                                        <textarea name="ref1" class="block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 @error('title') is-invalid @enderror">{{ $blogdata['ref1']}}</textarea>
                                         @error('ref1')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>

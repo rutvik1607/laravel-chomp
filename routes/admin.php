@@ -5,6 +5,7 @@ use App\Http\Controllers\BlogsController;
 use Illuminate\Support\Facades\Route;
 
 
+
 Route::group(['prefix' => 'admin'], function () {
 
 
@@ -39,10 +40,14 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('blogs/add', function () {
         return view('blogs.add');
     });
+
     Route::post('blogs/add', [BlogsController::class, 'add'])->middleware(['auth'])->name('blogAdd');
+    // Route::post('blogs/add', [BlogsController::class, 'validation']);
 
     Route::get('blogs/edit/{id}', [BlogsController::class, 'edit'], function () {
         return view('blogs.edit', 'id => {id}');
     });
-    Route::post('blogs/edit/{id}', [BlogsController::class, 'edit'])->middleware(['auth'])->name('blogEdit');
+    Route::post('blogs/edit/{id}', [BlogsController::class, 'editBlog'])->middleware(['auth'])->name('blogEdit');
+
+    Route::get('blogs/removeImage/{id}', [BlogsController::class, 'removeImage'])->name('removeImage');
 });
