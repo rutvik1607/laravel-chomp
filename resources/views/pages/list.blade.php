@@ -1,3 +1,8 @@
+<style>
+    .btn-primary {
+        background-color: #0d6efd !important;
+    }
+</style>
 <x-app-layout>
 
     <x-slot name="header">
@@ -15,14 +20,11 @@
                 <div class="bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-2 bg-indigo-50 border-b border-gray-200 text-center text-danger card">
                         <div class="card-heade text-end p-2">
-                            <x-form.button
-                                class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 ml-3 p-4"
-                                name="Add New Page" id="newPagesAdd" action="{{ Route('addPages') }}" />
+                            <x-form.button class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 ml-3 p-4" name="Add New Page" id="newPagesAdd" action="{{ Route('addPages') }}" />
                         </div>
-                       
+
                         <div class="card-body">
-                            <x-form.table :label="$labels" :data="$datas['data']" :unsetFields="$filedNotShow" :action="$action"
-                                tableId="addPagesTable" />
+                            <x-form.table :label="$labels" :data="$datas['data']" :unsetFields="$filedNotShow" :action="$action" tableId="addPagesTable" />
                         </div>
 
                         {!! $paginate->links() !!}
@@ -34,3 +36,25 @@
 
 
 </x-app-layout>
+<script>
+    $(document).ready(function() {
+        jQuery(document).on("click", '.confirmdelete', function(event) {
+            event.preventDefault();
+            dlink = jQuery(this).attr('href');
+            jQuery.confirm({
+                title: 'Confirm!',
+                buttons: {
+                    Confirm: {
+                        btnClass: 'btn-primary',
+                        action: function() {
+                            location.href = dlink;
+                        },
+                    },
+                    Cancel: function() {
+
+                    },
+                }
+            });
+        });
+    });
+</script>
