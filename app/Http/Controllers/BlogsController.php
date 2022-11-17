@@ -30,8 +30,7 @@ class BlogsController extends Controller
             'title' => 'required',
             'description' => 'required',
             'ref1' => 'required',
-            // 'file' => 'required',
-            // 'image' => 'required',
+            'image' => 'required|image|mimes:jpg',
         ]);
         echo $request->file('image')->store('uploads');
         // insert query
@@ -47,8 +46,10 @@ class BlogsController extends Controller
         $image->move(public_path('/images/blog'), $image_name);
         $blog->image = $image_name;
 
-        $blog->save();
-        return redirect('/admin/blogs/list');
+        if ($blog->save()) {
+            Sweetalert::Success('Blog Added Successfully...')->autoclose(2000);
+            return redirect('/admin/blogs/list');
+        }
     }
 
 
@@ -68,14 +69,14 @@ class BlogsController extends Controller
     {
         $blog = Blogs::find($id);
         if (!is_null($blog)) {
-            $blog->delete();
+            if ($blog->delete()) {
+                Sweetalert::success('Blog Delete Successfully...')->autoclose(2000);
+                return back();
+            }
         }
-        // return redirect()->back();
-        return redirect('/admin/blogs/list');
     }
     public function edit($id)
     {
-
         $blog = Blogs::find($id)->toArray();
         $data = compact('blog');
         return view('blogs.edit')->with('blog', $data);
@@ -88,8 +89,7 @@ class BlogsController extends Controller
             'title' => 'required',
             'description' => 'required',
             'ref1' => 'required',
-            // 'file' => 'required',
-            // 'image' => 'required',
+            'image' => 'required|image|mimes:jpg',
         ]);
         $blog = Blogs::find($id);
 
@@ -108,16 +108,19 @@ class BlogsController extends Controller
             $blog->image = $blog->image;
         }
 
-        $blog->save();
-        return redirect('/admin/blogs/list');
+        if ($blog->update()) {
+            Sweetalert::success('Blog Edit Successfully...')->autoclose(2000);
+            return back();
+        }
     }
     public function removeImage($id)
     {
         $blog = Blogs::find($id);
         File::delete(public_path('/images/blog/' . $blog->image));
         $blog->image = '';
-        $blog->save();
-        // return redirect('/admin/blogs/edit/' . $id);
-        return back();
+        if ($blog->save()) {
+            Sweetalert::success('Img Remove Successfully...')->autoclose(2000);
+            return back();
+        }
     }
 }

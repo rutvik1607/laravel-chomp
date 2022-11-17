@@ -71,7 +71,8 @@
 
                                     <div class="col-md-4">
                                         <x-label for="image" :value="__('Image')" />
-                                        <input type="file" name="image" id="image" class="block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 fileupload" {{ $blogdata['image']== '' ? 'required':'' }}>
+                                        <input type="file" name="image" id="image" class="block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 fileupload" >
+                                        {{-- {{ $blogdata['image']== '' ? 'required':'' }} --}}
                                         @error('image')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -79,7 +80,7 @@
                                         @enderror
                                         <?php if ($blogdata['image']) { ?>
                                             <div style="width: 150px;border: 1px solid #ddd;padding: 10px;margin-top: 1em;">
-                                                <img src="{{ url('/public/images/blog/'.$blogdata['image']) }}" style="width:50%">
+                                                <img src="{{ url('/public/images/blog/'.$blogdata['image']) }}">
                                             </div>
                                         <?php } ?>
                                         <?php if ($blogdata['image'] != '') { ?>

@@ -41,7 +41,7 @@
                             <td>
                                 @foreach ($val as $keys => $items)
                                     @if ($keys == 'delete')
-                                        <a href="{{ Route($items, $item['id']) }}"><i
+                                        <a href="{{ Route($items, $item['id']) }}" onclick="confirm('are you sure ?');"><i
                                                 class="fas fa-trash-alt"></i>&nbsp;</a>
                                     @elseif ($keys == 'edit')
                                         <a href="{{ Route($items, $item['id']) }}"><i class="fas fa-edit"></i>&nbsp;</a>
