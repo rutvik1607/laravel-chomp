@@ -1,3 +1,8 @@
+<style>
+    .btn-primary {
+        background-color: #0d6efd !important;
+    }
+</style>
 <x-app-layout>
 
     <x-slot name="header">
@@ -24,6 +29,26 @@
             </div>
         </div>
     </div>
-
-
 </x-app-layout>
+<script>
+    $(document).ready(function() {
+        jQuery(document).on("click", '.confirmdelete', function(event) {
+            event.preventDefault();
+            dlink = jQuery(this).attr('href');
+            jQuery.confirm({
+                title: 'Confirm!',
+                buttons: {
+                    Confirm: {
+                        btnClass: 'btn-primary',
+                        action: function() {
+                            location.href = dlink;
+                        },
+                    },
+                    Cancel: function() {
+
+                    },
+                }
+            });
+        });
+    });
+</script>
